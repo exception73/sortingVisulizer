@@ -79,16 +79,10 @@
     margin: 0 40px;
   }
 
-  .array-bars{
+  .array-bar{
     width: 2.3px;
     background-color: rgb(111, 78, 83);
     margin: 0 1px;
     color: red;
     display: inline block;
-  }
-
-  .bar{
-    display: flex;
-    column-gap: 5px;
-    margin: 0 40px;
   }
