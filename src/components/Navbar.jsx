@@ -64,24 +64,27 @@ function Navbar(props){
 
     }
 
+
+    
+
     function handleBubbleClick(){
         setalgo('Buble Sort');
         let animations = [];
 
-        for (let i = 0; i < arr.length - 1; i++)
+        for (let i = 0; i < arr.length - 1; i++){
  
-        for ( let j = 0; j < arr.length- i - 1; j++){
-            animations.push([j, j+1])
-            if (arr[j] > arr[j + 1]){
+            for ( let j = 0; j < arr.length- i - 1; j++){
+                animations.push([j, j+1])
+                if (arr[j] > arr[j + 1]){
 
-                let temp = arr[j];
-                arr[j] = arr[j+1];
-                arr[j+1] = temp;
-                
-            }    
-            animations.push([j, arr[j], j+1, arr[j+1]])    
+                    let temp = arr[j];
+                    arr[j] = arr[j+1];
+                    arr[j+1] = temp;
+                    
+                }    
+                animations.push([j, arr[j], j+1, arr[j+1]])    
+            }
         }
-
         for(let i = 0; i<animations.length; i++){
             const arrayBars = document.getElementsByClassName('array-bar');
             
@@ -98,6 +101,10 @@ function Navbar(props){
                     barOneStyle.backgroundColor = color1;
                     barTwoStyle.backgroundColor = color2;
                 }, i * ANIMATION_SPEED_MS );
+
+                barOneStyle.backgroundColor = `{rgb(111, 78, 83)}`;
+                barTwoStyle.backgroundColor = `{rgb(111, 78, 83)}`;
+
             } else{
                 setTimeout(() => {
                     const [barOneIdx, newOneHeight, barTwoIdx, newTwoHeight] = animations[i];
@@ -115,7 +122,10 @@ function Navbar(props){
     }
 
 
+
+
     function handleSelectionClick(){
+
         setalgo('Selection Sort')
         let animations = []
 
@@ -129,21 +139,52 @@ function Navbar(props){
                 if (arr[j] < arr[min_idx]){
                     min_idx = j;
                 }
-                animations.push(i, j)
+                animations.push([i, j])
             }
-                
-            animations.push()
 
-            if(min_idx!=i){
+            if(min_idx!==i){
                 
                 let temp = arr[min_idx];
                 arr[min_idx] = arr[i];
                 arr[i] = temp;
+
+            }            
+            animations.push([i,arr[i], min_idx, arr[min_idx]])  
+        }
+
+        console.log(animations)
+
+        for(let i = 0; i<animations.length; i++){
+            const arrayBars = document.getElementsByClassName('array-bar');
+
+            if(animations[i].length === 2){
+                const [barOneIdx, barTwoIdx] = animations[i];
+                const barOneStyle = arrayBars[barOneIdx].style;
+                const barTwoStyle  = arrayBars[barTwoIdx].style;
+                const color = 'red';
+                                
+                setTimeout(() =>{
+                    barOneStyle.backgroundColor = color;
+                    barTwoStyle.backgroundColor = color;
+                }, i * ANIMATION_SPEED_MS );   
+            }else{
+                setTimeout(() => {
+                    const [barOneIdx, barOneHeight, barTwoIdx, barTwoHeight] = animations[i];
+                    const barOneStyle = arrayBars[barOneIdx].style;
+                    const barTwoStyle = arrayBars[barTwoIdx].style;
+                    barOneStyle.height = `${barOneHeight}px`;
+                    barTwoStyle.height = `${barTwoHeight}px`;
+                }, i*ANIMATION_SPEED_MS);
             }
 
-              
         }
+        setTimeout(()=>{
+            setalgo("Algorithms")
+        },animations.length * ANIMATION_SPEED_MS)
     }
+
+
+
 
     
     return(
