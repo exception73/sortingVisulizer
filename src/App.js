@@ -1,9 +1,11 @@
 import './App.css';
+import './components/Navbar.css'
+
 import Navbar from './components/Navbar';
 function App() {
 
   const arr = [];
-  for(let i = 0; i<100; i++){
+  for(let i = 0; i<30; i++){
     arr.push(Math.floor(Math.random()*(700-5+1)+5));
   }
 

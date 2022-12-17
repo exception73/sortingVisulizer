@@ -1,16 +1,13 @@
 import React, { useState } from 'react'
-import './Navbar.css'
 import  getMergeSortAnimations from './sortingAlgorithms';
 
-const   ANIMATION_SPEED_MS = 3;
-
+const ANIMATION_SPEED_MS = 10;
 
 function Navbar(props){
 
     // initilizing the array that we have passed from the app.js file
     const temp = props.array;
     const [arr, setArr] = useState(temp);
-
 
     const [algo, setalgo] = useState('Alogrithms')
 
@@ -21,7 +18,7 @@ function Navbar(props){
 
     function resetArray(){
         const temparr = []; 
-        for(let i = 0; i<100; i++){
+        for(let i = 0; i<30; i++){
             temparr.push(randomIntFromInterval(5,700));
         }
         setArr(temparr);
@@ -29,37 +26,17 @@ function Navbar(props){
     }
 
 
-
-
-
-    const handleBubbleClick = () =>{
-        setalgo('Bubble Sort');
-       bubblesorting();
-}
-
-    function bubblesorting(){
-        // for (let i = 0; i < arr.length; i++) {
-        //     for (let j = 0; j < arr.length - i - 1; j++) {
-        //         const [first, second] = useState(arr[j]);
-        //         document.getElementById('')
-        //         if (compare(arr, j, j + 1)) {
-        //             swap(arr, j, j + 1);
-        //         }
-        //     }
-        // }
-
-
-
-    }
-
-
     function handleMergeClick(){
         setalgo('Merge Sort');
         
-        const animations = getMergeSortAnimations(arr);
+        let duplicate = arr;
+        const animations = getMergeSortAnimations(duplicate);
+        console.log(duplicate)
+        console.log(arr)
+        
         for(let i = 0; i<animations.length; i++){
             const arrayBars = document.getElementsByClassName('array-bar');
-            // true when i = 1,3,4,6,7,9....
+            // true when i = 1,3,4,6,7,9...
             const isColorChange = i % 3 !== 2; 
             if(isColorChange){
                 const [barOneIdx, barTwoIdx] = animations[i];
@@ -78,7 +55,7 @@ function Navbar(props){
                     barOneStyle.height = `${newHeight}px`;
                 }, i*ANIMATION_SPEED_MS);
             }
-        }
+        }       
 
         setTimeout(()=>{
             setalgo("Algorithms")
@@ -87,27 +64,86 @@ function Navbar(props){
 
     }
 
+    function handleBubbleClick(){
+        setalgo('Buble Sort');
+        let animations = [];
+
+        for (let i = 0; i < arr.length - 1; i++)
+ 
+        for ( let j = 0; j < arr.length- i - 1; j++){
+            animations.push([j, j+1])
+            if (arr[j] > arr[j + 1]){
+
+                let temp = arr[j];
+                arr[j] = arr[j+1];
+                arr[j+1] = temp;
+                
+            }    
+            animations.push([j, arr[j], j+1, arr[j+1]])    
+        }
+
+        for(let i = 0; i<animations.length; i++){
+            const arrayBars = document.getElementsByClassName('array-bar');
+            
+            const isColorChange = i&1; 
+            if(!isColorChange){
+                const [barOneIdx, barTwoIdx] = animations[i];
+                const barOneStyle = arrayBars[barOneIdx].style;
+                const barTwoStyle  = arrayBars[barTwoIdx].style;
+                const color1 = 'red';
+                const color2 = 'blue'
+
+                
+                setTimeout(() =>{
+                    barOneStyle.backgroundColor = color1;
+                    barTwoStyle.backgroundColor = color2;
+                }, i * ANIMATION_SPEED_MS );
+            } else{
+                setTimeout(() => {
+                    const [barOneIdx, newOneHeight, barTwoIdx, newTwoHeight] = animations[i];
+                    const barOneStyle = arrayBars[barOneIdx].style;
+                    const barTwoStyle = arrayBars[barTwoIdx].style;
+                    barOneStyle.height = `${newOneHeight}px`;
+                    barTwoStyle.height = `${newTwoHeight}px`;
+                }, i*ANIMATION_SPEED_MS);
+            }
+        }    
+        
+        setTimeout(()=>{
+            setalgo("Algorithms")
+        },animations.length * ANIMATION_SPEED_MS)
+    }
 
 
-    
-// function swap(arr, x, y) {
-//     //set color and swap
-//     arr[x].swap = true;
-//     arr[y].swap = true;
+    function handleSelectionClick(){
+        setalgo('Selection Sort')
+        let animations = []
 
-//     const temp = arr[x];
-//     arr[x] = arr[y];
-//     arr[y] = temp;
-// }
-// function compare(arr, x, y) {
-//     //set color and compare
-//     arr[x].compare = true;
-//     arr[y].compare = true;
-//     return arr[x].val > arr[y].val;
-// }
+        let i, j, min_idx;
 
+        for (i = 0; i < arr.length-1; i++)
+        {
+           
+            min_idx = i;
+            for (j = i+1; j < arr.length; j++){
+                if (arr[j] < arr[min_idx]){
+                    min_idx = j;
+                }
+                animations.push(i, j)
+            }
+                
+            animations.push()
 
+            if(min_idx!=i){
+                
+                let temp = arr[min_idx];
+                arr[min_idx] = arr[i];
+                arr[i] = temp;
+            }
 
+              
+        }
+    }
 
     
     return(
@@ -117,15 +153,14 @@ function Navbar(props){
             <div className='navbar'>
 
                 <p className='heading'>Sorting Visulizer</p>
-                
 
                 <div className="dropdown">
                     <button className="dropbtn">{algo} &or;</button>
                     <div className="dropdown-content">
                         <a  onClick={handleBubbleClick}>Bubble Sort</a>
-                        {/* <a  onClick={handleSelectionClick}>Selection Sort</a> */}
+                        <a  onClick={handleSelectionClick}>Selection Sort</a>
                         {/* <a  onClick={handleInsertionClick}>Insertion Sort</a> */}
-                        <a  onClick={handleMergeClick}>Merge Sort</a>
+                        <a onClick={handleMergeClick}>Merge Sort</a>
                         {/* <a  onClick={handleQuickClick}>Quick Sort</a> */}
                     </div>
                 </div>
@@ -142,23 +177,20 @@ function Navbar(props){
                 </div>
 
                 <button className='reset' onClick={resetArray}>Reset</button>
-            </div>
+                </div>
 
         
-        <div className="bars">
-        
-                {
-                    arr.map((value) => (
-                        <div className="array-bar"
-                            style ={{height : `${value}px`}}>{}
-                        </div>
-                    ))
-                }
-        
+                <div className="bars">
+                        {
+                            arr.map((value) => (
+                                <div className="array-bar"
+                                    style ={{height : `${value}px`}}>{}
+                                </div>
+                            ))
+                        }
+                </div>
+            
         </div>
-
-    </div>
-
     )
 }
 
