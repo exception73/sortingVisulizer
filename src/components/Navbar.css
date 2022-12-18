@@ -4,7 +4,7 @@
 }
 
 .dropbtn {
-    background-color: #04AA6D;
+    background-color: #00c079;
     color: white;
     padding: 16px;
     font-size: 16px;
@@ -58,31 +58,75 @@
 
   .heading{
     margin: auto;
+    font-size: 1.6rem;
   }
 
   .speed_container {
     margin: auto;
+    display: flex;
+    justify-content: center;
   }
 
   .datasize_container{
     margin: auto;
+    display: flex;
+    justify-content: center;
   }
   
 
   .reset{
     margin: auto;
+    border: none;
+    background-color: #00c079;
+    color: white;
+    padding: 16px 32px;
+    font-size: 16px;
+    transition: all 100ms;
+  }
+
+  .reset:hover{
+    opacity: 0.9;
+  }
+
+  .reset:active{
+    opacity: 0.75;
+  }
+ 
+
+  .body{
+    display: flex;
+    column-gap: 4rem;
+    justify-content: space-around
   }
 
   .bars{
     display: flex;
     column-gap: 5px;
-    margin: 0 40px;
+    
   }
 
   .array-bar{
     width: 2.3px;
-    background-color: rgb(111, 78, 83);
+    background-color: royalblue;
     margin: 0 1px;
     color: red;
     display: inline block;
+  }
+
+
+  .contactus{
+    display: flex;
+    flex-direction: column;
+    margin-top: 3rem;
+
+  }
+
+  .contactus a{
+    text-decoration: none;
+    line-height:2rem;
+    color: black;
+  }
+
+  .timeComplexity{
+    margin-top: 3rem;
   }

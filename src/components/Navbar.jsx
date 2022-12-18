@@ -1,24 +1,32 @@
 import React, { useState } from 'react'
 import  getMergeSortAnimations from './sortingAlgorithms';
 
-const ANIMATION_SPEED_MS = 10;
+
 
 function Navbar(props){
 
     // initilizing the array that we have passed from the app.js file
-    const temp = props.array;
-    const [arr, setArr] = useState(temp);
+
+    const [ANIMATION_SPEED_MS, setSpeed] = useState(10)
+    
+    const [arr, setArr] = useState(props.array);
+    
 
     const [algo, setalgo] = useState('Alogrithms')
-
+    const [avg, setavg] = useState('Average TC : ---')
+    const [best, setbest] = useState('Best TC : ---')
+    const [worst, setworst] = useState('Worst TC : ---')
 
     function randomIntFromInterval(min, max){
         return Math.floor(Math.random()*(max-min+1)+min);
     }
 
-    function resetArray(){
-        const temparr = []; 
-        for(let i = 0; i<30; i++){
+    function resetArray(val){
+       if(val === undefined) val = 55;
+    
+        let temparr = []; 
+        
+        for(let i = 0; i<val; i++){
             temparr.push(randomIntFromInterval(5,700));
         }
         setArr(temparr);
@@ -28,21 +36,27 @@ function Navbar(props){
 
     function handleMergeClick(){
         setalgo('Merge Sort');
+        setavg(' Average TC : O(n*logn)')
+        setworst(' Worst TC : O(n*log n)')
+        setbest(' Best TC : O(n*log n)')
         
-        let duplicate = arr;
-        const animations = getMergeSortAnimations(duplicate);
-        console.log(duplicate)
-        console.log(arr)
+        let temp = []
+        let indexx = -1;
+
+        while(++indexx < arr.length) temp[indexx] = arr[indexx]
+
+        let animations = getMergeSortAnimations(temp);
+       
         
         for(let i = 0; i<animations.length; i++){
-            const arrayBars = document.getElementsByClassName('array-bar');
+            let arrayBars = document.getElementsByClassName('array-bar');
             // true when i = 1,3,4,6,7,9...
-            const isColorChange = i % 3 !== 2; 
+            let isColorChange = i % 3 !== 2; 
             if(isColorChange){
-                const [barOneIdx, barTwoIdx] = animations[i];
-                const barOneStyle = arrayBars[barOneIdx].style;
-                const barTwoStyle  = arrayBars[barTwoIdx].style;
-                const color = i % 3 === 0 ? 'red' : 'turquoise';
+                let [barOneIdx, barTwoIdx] = animations[i];
+                let barOneStyle = arrayBars[barOneIdx].style;
+                let barTwoStyle  = arrayBars[barTwoIdx].style;
+                let color = i % 3 === 0 ? 'red' : 'turquoise';
                 
                 setTimeout(() =>{
                     barOneStyle.backgroundColor = color;
@@ -50,8 +64,8 @@ function Navbar(props){
                 }, i * ANIMATION_SPEED_MS );
             } else{
                 setTimeout(() => {
-                    const [barOneIdx, newHeight ] = animations[i];
-                    const barOneStyle = arrayBars[barOneIdx].style;
+                    let [barOneIdx, newHeight ] = animations[i];
+                    let barOneStyle = arrayBars[barOneIdx].style;
                     barOneStyle.height = `${newHeight}px`;
                 }, i*ANIMATION_SPEED_MS);
             }
@@ -65,36 +79,42 @@ function Navbar(props){
     }
 
 
-    
+
 
     function handleBubbleClick(){
         setalgo('Buble Sort');
+        setavg(' Average TC : O(N²)')
+        setworst(' Worst TC :O(N²)')
+        setbest(' Best TC : O(N)')
         let animations = [];
+        let temp = []
+        let indexx = -1;
 
-        for (let i = 0; i < arr.length - 1; i++){
+        while(++indexx < arr.length) temp[indexx] = arr[indexx]
+
+        for (let i = 0; i < temp.length - 1; i++){
  
-            for ( let j = 0; j < arr.length- i - 1; j++){
+            for ( let j = 0; j < temp.length- i - 1; j++){
                 animations.push([j, j+1])
-                if (arr[j] > arr[j + 1]){
+                if (temp[j] > temp[j + 1]){
 
-                    let temp = arr[j];
-                    arr[j] = arr[j+1];
-                    arr[j+1] = temp;
+                    let temporary = temp[j];
+                    temp[j] = temp[j+1];
+                    temp[j+1] = temporary;
                     
                 }    
                 animations.push([j, arr[j], j+1, arr[j+1]])    
             }
         }
         for(let i = 0; i<animations.length; i++){
-            const arrayBars = document.getElementsByClassName('array-bar');
-            
-            const isColorChange = i&1; 
+            let arrayBars = document.getElementsByClassName('array-bar');
+            let isColorChange = i&1; 
             if(!isColorChange){
-                const [barOneIdx, barTwoIdx] = animations[i];
-                const barOneStyle = arrayBars[barOneIdx].style;
-                const barTwoStyle  = arrayBars[barTwoIdx].style;
-                const color1 = 'red';
-                const color2 = 'blue'
+                let [barOneIdx, barTwoIdx] = animations[i];
+                let barOneStyle = arrayBars[barOneIdx].style;
+                let barTwoStyle  = arrayBars[barTwoIdx].style;
+                let color1 = 'red';
+                let color2 = 'blue'
 
                 
                 setTimeout(() =>{
@@ -102,19 +122,19 @@ function Navbar(props){
                     barTwoStyle.backgroundColor = color2;
                 }, i * ANIMATION_SPEED_MS );
 
-                barOneStyle.backgroundColor = `{rgb(111, 78, 83)}`;
-                barTwoStyle.backgroundColor = `{rgb(111, 78, 83)}`;
-
             } else{
                 setTimeout(() => {
-                    const [barOneIdx, newOneHeight, barTwoIdx, newTwoHeight] = animations[i];
-                    const barOneStyle = arrayBars[barOneIdx].style;
-                    const barTwoStyle = arrayBars[barTwoIdx].style;
+                    let [barOneIdx, newOneHeight, barTwoIdx, newTwoHeight] = animations[i];
+                    let barOneStyle = arrayBars[barOneIdx].style;
+                    let barTwoStyle = arrayBars[barTwoIdx].style;
                     barOneStyle.height = `${newOneHeight}px`;
                     barTwoStyle.height = `${newTwoHeight}px`;
+                    barTwoStyle.backgroundColor=`turquoise`
                 }, i*ANIMATION_SPEED_MS);
             }
         }    
+
+
         
         setTimeout(()=>{
             setalgo("Algorithms")
@@ -127,54 +147,62 @@ function Navbar(props){
     function handleSelectionClick(){
 
         setalgo('Selection Sort')
+        setavg(' Average TC : O(N²)')
+        setworst(' Worst TC :O(N²)')
+        setbest(' Best TC : O(N²)')
         let animations = []
+
+        let temp = []
+        let indexx = -1;
+
+        while(++indexx < arr.length) temp[indexx] = arr[indexx]
 
         let i, j, min_idx;
 
-        for (i = 0; i < arr.length-1; i++)
+        for (i = 0; i < temp.length-1; i++)
         {
            
             min_idx = i;
-            for (j = i+1; j < arr.length; j++){
-                if (arr[j] < arr[min_idx]){
+            for (j = i+1; j < temp.length; j++){
+                if (temp[j] < temp[min_idx]){
                     min_idx = j;
                 }
                 animations.push([i, j])
             }
-
-            if(min_idx!==i){
                 
-                let temp = arr[min_idx];
-                arr[min_idx] = arr[i];
-                arr[i] = temp;
-
-            }            
-            animations.push([i,arr[i], min_idx, arr[min_idx]])  
+                animations.push([i,temp[i], min_idx, temp[min_idx]])
+                let temporary = temp[min_idx];
+                temp[min_idx] = temp[i];
+                temp[i] = temporary;
+              
         }
 
         console.log(animations)
 
-        for(let i = 0; i<animations.length; i++){
-            const arrayBars = document.getElementsByClassName('array-bar');
+        for(let x = 0; x<animations.length; x++){
+            let arrayBars = document.getElementsByClassName('array-bar');
 
-            if(animations[i].length === 2){
-                const [barOneIdx, barTwoIdx] = animations[i];
-                const barOneStyle = arrayBars[barOneIdx].style;
-                const barTwoStyle  = arrayBars[barTwoIdx].style;
-                const color = 'red';
-                                
+            if(animations[x].length == 2){
+                let [barOneIdx, barTwoIdx] = animations[x];
+                let barOneStyle = arrayBars[barOneIdx].style;
+                let barTwoStyle  = arrayBars[barTwoIdx].style;
+                let color1 = 'red';
+                let color2 = 'yellow'
                 setTimeout(() =>{
-                    barOneStyle.backgroundColor = color;
-                    barTwoStyle.backgroundColor = color;
-                }, i * ANIMATION_SPEED_MS );   
+                    barOneStyle.backgroundColor = color1;
+                    barTwoStyle.backgroundColor = color2;
+                }, x * ANIMATION_SPEED_MS); 
+                
             }else{
                 setTimeout(() => {
-                    const [barOneIdx, barOneHeight, barTwoIdx, barTwoHeight] = animations[i];
-                    const barOneStyle = arrayBars[barOneIdx].style;
-                    const barTwoStyle = arrayBars[barTwoIdx].style;
-                    barOneStyle.height = `${barOneHeight}px`;
-                    barTwoStyle.height = `${barTwoHeight}px`;
-                }, i*ANIMATION_SPEED_MS);
+                    let [barOneIdx, barOneHeight, barTwoIdx, barTwoHeight] = animations[x];
+                    let barOneStyle = arrayBars[barOneIdx].style;
+                    let barTwoStyle = arrayBars[barTwoIdx].style;
+                    barOneStyle.height = `${barTwoHeight}px`;
+                    barOneStyle.backgroundColor = `turquoise`
+                    barTwoStyle.height = `${barOneHeight}px`;
+                    
+                }, x*ANIMATION_SPEED_MS);
             }
 
         }
@@ -183,6 +211,44 @@ function Navbar(props){
         },animations.length * ANIMATION_SPEED_MS)
     }
 
+
+
+
+    function handleInsertionClick(){
+
+        setalgo('Insertion Sort')
+        setavg(' Average TC : O(N²)')
+        setworst(' Worst TC :O(N²)')
+        setbest(' Best TC : O(N)')
+        let animations = []
+        let temp = []
+        
+        let indexxx = -1
+        while (++indexxx < arr.length) {
+        temp[indexxx] =arr[indexxx];
+        }
+        let i, key, j; 
+        for (i = 1; i < temp.length; i++)
+        { 
+            key = temp[i]; 
+            j = i - 1; 
+       
+            while (j >= 0 && temp[j] > key)
+            { 
+                temp[j + 1] = temp[j]; 
+                j = j - 1; 
+            } 
+            temp[j + 1] = key; 
+        }
+        
+
+
+
+        setTimeout(()=>{
+            setalgo("Algorithms")
+        },animations.length * ANIMATION_SPEED_MS)
+
+    }
 
 
 
@@ -195,12 +261,14 @@ function Navbar(props){
 
                 <p className='heading'>Sorting Visulizer</p>
 
+                
+
                 <div className="dropdown">
                     <button className="dropbtn">{algo} &or;</button>
                     <div className="dropdown-content">
                         <a  onClick={handleBubbleClick}>Bubble Sort</a>
                         <a  onClick={handleSelectionClick}>Selection Sort</a>
-                        {/* <a  onClick={handleInsertionClick}>Insertion Sort</a> */}
+                        <a  onClick={handleInsertionClick}>Insertion Sort</a>
                         <a onClick={handleMergeClick}>Merge Sort</a>
                         {/* <a  onClick={handleQuickClick}>Quick Sort</a> */}
                     </div>
@@ -208,19 +276,26 @@ function Navbar(props){
 
                 <div className='datasize_container'>
                     <label htmlFor="arrsize">Data Size: </label>
-                    <input type="range" id='arrsize'/>
+                    <input type="range" id='arrsize' onChange={e=>resetArray(e.target.value)}  valuestep={4} max={100} min={10}/>
                 </div>
 
 
                 <div className='speed_container'>
                     <label htmlFor="speed">Speed: </label>
-                    <input type="range" id='speed'/>
+                    <input type="range" id='speed' onChange={e=>setSpeed(e.target.value)}  valuestep={4} max={100} min={1}/>
                 </div>
 
                 <button className='reset' onClick={resetArray}>Reset</button>
+            </div>
+
+            <div className='body'>
+
+                <div className='timeComplexity'>
+                    <p>{best}</p>
+                    <p>{avg}</p>
+                    <p>{worst}</p>
                 </div>
 
-        
                 <div className="bars">
                         {
                             arr.map((value) => (
@@ -230,7 +305,16 @@ function Navbar(props){
                             ))
                         }
                 </div>
+
+
+                <div className='contactus'>
+                    <a href="https://github.com/exception73">Source Code</a>
+                    <a href="">Linked In</a>
+                    <a href="https://www.instagram.com/gautamkhatri05/">Instagram</a>
+                    <p>{ANIMATION_SPEED_MS}</p>
+                </div>
             
+            </div>
         </div>
     )
 }
