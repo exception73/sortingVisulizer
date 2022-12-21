@@ -1,5 +1,8 @@
 import React, { useState } from 'react'
 import  getMergeSortAnimations from './sortingAlgorithms';
+import Typewriter from 'typewriter-effect';
+import useWindowSize from 'react-use/lib/useWindowSize';
+import Confetti from 'react-confetti';
 
 
 
@@ -21,8 +24,17 @@ function Navbar(props){
         return Math.floor(Math.random()*(max-min+1)+min);
     }
 
+    function resetArray1(){
+        let temparr = []; 
+        
+        for(let i = 0; i<55; i++){
+            temparr.push(randomIntFromInterval(5,700));
+        }
+        setArr(temparr);
+        setalgo('Alogrithms');
+    }
+
     function resetArray(val){
-       if(val === undefined) val = 55;
     
         let temparr = []; 
         
@@ -71,15 +83,13 @@ function Navbar(props){
             }
         }       
 
+       
+
         setTimeout(()=>{
             setalgo("Algorithms")
-        },animations.length * ANIMATION_SPEED_MS)
-        
-
+          
+        },animations.length * ANIMATION_SPEED_MS)   
     }
-
-
-
 
     function handleBubbleClick(){
         setalgo('Buble Sort');
@@ -103,9 +113,10 @@ function Navbar(props){
                     temp[j+1] = temporary;
                     
                 }    
-                animations.push([j, arr[j], j+1, arr[j+1]])    
+                animations.push([j, temp[j], j+1, temp[j+1]])    
             }
         }
+
         for(let i = 0; i<animations.length; i++){
             let arrayBars = document.getElementsByClassName('array-bar');
             let isColorChange = i&1; 
@@ -212,8 +223,6 @@ function Navbar(props){
     }
 
 
-
-
     function handleInsertionClick(){
 
         setalgo('Insertion Sort')
@@ -227,12 +236,14 @@ function Navbar(props){
         while (++indexxx < arr.length) {
         temp[indexxx] =arr[indexxx];
         }
+
+
         let i, key, j; 
         for (i = 1; i < temp.length; i++)
         { 
             key = temp[i]; 
             j = i - 1; 
-       
+            
             while (j >= 0 && temp[j] > key)
             { 
                 temp[j + 1] = temp[j]; 
@@ -240,7 +251,6 @@ function Navbar(props){
             } 
             temp[j + 1] = key; 
         }
-        
 
 
 
@@ -250,9 +260,11 @@ function Navbar(props){
 
     }
 
+    function handleQuickClick(){
+
+    }
 
 
-    
     return(
 
         <div>
@@ -268,9 +280,9 @@ function Navbar(props){
                     <div className="dropdown-content">
                         <a  onClick={handleBubbleClick}>Bubble Sort</a>
                         <a  onClick={handleSelectionClick}>Selection Sort</a>
-                        <a  onClick={handleInsertionClick}>Insertion Sort</a>
+                        {/* <a  onClick={handleInsertionClick}>Insertion Sort</a> */}
                         <a onClick={handleMergeClick}>Merge Sort</a>
-                        {/* <a  onClick={handleQuickClick}>Quick Sort</a> */}
+                        <a  onClick={handleQuickClick}>Quick Sort</a>
                     </div>
                 </div>
 
@@ -285,7 +297,7 @@ function Navbar(props){
                     <input type="range" id='speed' onChange={e=>setSpeed(e.target.value)}  valuestep={4} max={100} min={1}/>
                 </div>
 
-                <button className='reset' onClick={resetArray}>Reset</button>
+                <button className='reset' onClick={resetArray1}>Reset</button>
             </div>
 
             <div className='body'>
@@ -309,7 +321,7 @@ function Navbar(props){
 
                 <div className='contactus'>
                     <a href="https://github.com/exception73">Source Code</a>
-                    <a href="">Linked In</a>
+                    <a href="https://www.linkedin.com/in/gautam-khatri-873131222/">Linked In</a>
                     <a href="https://www.instagram.com/gautamkhatri05/">Instagram</a>
                     <p>{ANIMATION_SPEED_MS}</p>
                 </div>
