@@ -320,10 +320,10 @@ function Navbar(props){
 
 
                 <div className='contactus'>
-                    <a href="https://github.com/exception73">Source Code</a>
+                    <a href="https://github.com/exception73/sortingVisulizer">Source Code</a>
                     <a href="https://www.linkedin.com/in/gautam-khatri-873131222/">Linked In</a>
                     <a href="https://www.instagram.com/gautamkhatri05/">Instagram</a>
-                    <p>{ANIMATION_SPEED_MS}</p>
+                    {/* <p>{ANIMATION_SPEED_MS}</p> */}
                 </div>
             
             </div>
